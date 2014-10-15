@@ -24,14 +24,10 @@
   <script src='lib/swagger-oauth.js' type='text/javascript'></script>
   <script type="text/javascript">
     $(function () {
-      var url = window.location.search.match(/url=([^&]+)/);
-      if (url && url.length > 1) {
-        url = url[1];
-      } else {
-        url = "http://petstore.swagger.wordnik.com/v2/swagger.json";
-      }
+ 	  var url = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '') + "/api-docs";
       window.swaggerUi = new SwaggerUi({
         url: url,
+        baseUrl: url,
         dom_id: "swagger-ui-container",
         supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
         onComplete: function(swaggerApi, swaggerUi){
@@ -55,7 +51,7 @@
         docExpansion: "none",
         sorter : "alpha"
       });
-
+      
       function addApiKeyAuthorization() {
         var key = $('#input_apiKey')[0].value;
         log("key: " + key);
@@ -68,14 +64,23 @@
       $('#input_apiKey').change(function() {
         addApiKeyAuthorization();
       });
-
+      
+	  //window.authorizations.add("api_key", new ApiKeyAuthorization("api_key", "test", "header"));
       // if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
       /*
         var apiKey = "myApiKeyXXXX123456789";
         $('#input_apiKey').val(apiKey);
         addApiKeyAuthorization();
       */
+    
+      var updateAuth = function() {
+         var auth = "Basic " + btoa($('#input_user')[0].value + ":" + $('#input_pass')[0].value);
+         window.authorizations.add("key", new ApiKeyAuthorization("Authorization", auth, "header "));
+     };
 
+    $('#input_user').change(updateAuth);
+    $('#input_pass').change(updateAuth);
+      //window.authorizations.add("key", new ApiKeyAuthorization("Authorization", "Basic YWRtaW46YWRtaW4=", "header"));
       window.swaggerUi.load();
   });
   </script>
@@ -85,16 +90,10 @@
 <div id='header'>
   <div class="swagger-ui-wrap">
     <a id="logo" href="http://swagger.wordnik.com">swagger</a>
+ 
     <form id='api_selector'>
-      <div class='input icon-btn'>
-        <img id="show-pet-store-icon" src="images/pet_store_api.png" title="Show Swagger Petstore Example Apis">
-      </div>
-      <div class='input icon-btn'>
-        <img id="show-wordnik-dev-icon" src="images/wordnik_api.png" title="Show Wordnik Developer Apis">
-      </div>
-      <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
-      <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
-      <div class='input'><a id="explore" href="#">Explore</a></div>
+      <div class='input'><input placeholder="user" id="input_user" name="user" type="text" size="10"/></div>	
+      <div class='input'><input placeholder="pass" id="input_pass" name="pass" type="password" size="10"/></div>
     </form>
   </div>
 </div>
