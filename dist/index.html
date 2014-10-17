@@ -80,7 +80,8 @@
 
     $('#input_user').change(updateAuth);
     $('#input_pass').change(updateAuth);
-      //window.authorizations.add("key", new ApiKeyAuthorization("Authorization", "Basic YWRtaW46YWRtaW4=", "header"));
+    
+    $("#baseLink").html("<a href=\"" + url + "\">" + url + "</a>");
       window.swaggerUi.load();
   });
   </script>
@@ -102,9 +103,13 @@
 <div class="swagger-ui-wrap" align="left">
 <br>
     <h1>Management REST Interface</h1>
-    Welcome to the API for the Management REST Services. Developers can access the resources directly below.<br><br>
-    
-	There is also a Java based <a href="../resource-adapter">resource adapter</a> available for download.<br><br>
+    Welcome to the API for the Management REST Services. Developers can access the resources directly below. 
+    <br><br>
+    To generate code stubs in your desired language 
+    you can use the  <a href="https://github.com/wordnik/swagger-codegen">Swagger CodeGen</a> utility. The URL you should provide to it is: 
+    <div id="baseLink" style="display:inline"></div>
+    <br><br>
+	There is also a Java based <a href="../resource-adapter">resource adapter</a> available for download.<br><br><br>
 
 </div>
 <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
